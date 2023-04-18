@@ -1,5 +1,10 @@
 # Laravel Livewire Modals
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/smirltech/livewire-modals.svg?style=flat-square)](https://packagist.org/packages/smirltech/livewire-modals)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/smirltech/livewire-modals/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/smirltech/livewire-modals/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/smirltech/livewire-modals/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/smirltech/livewire-modals/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/smirltech/livewire-modals.svg?style=flat-square)](https://packagist.org/packages/smirltech/livewire-modals)
+
 This package allows you to dynamically show your Laravel Livewire components inside Bootstrap modals.
 
 ## Documentation
@@ -97,13 +102,8 @@ Alternatively, you can use the `x-modals::base` or `x-modals::form` component:
 
 ```html
 
-<x-modals::base>
-    <x-slot:title>Modal title</x-slot:title>
-    <p>Modal body text goes here.</p>
-    <x-slot:footer>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-    </x-slot:footer>
+<x-modals::base title="Modal title">
+    Modal body text goes here.
 </x-modals::base>
 ```
 
