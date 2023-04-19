@@ -8,15 +8,11 @@
         </div>
         <div class="modal-body">
             {{$slot}}
-            <div class="modal-footer">
-                @isset($footer)
+            @isset($footer)
+                <div class="modal-footer">
                     {{$footer}}
-                @else
-                    <x-form::button-secondary type="button" data-bs-dismiss="modal">Fermer
-                    </x-form::button-secondary>
-                    <x-form::button-primary type="submit">Enregistrer</x-form::button-primary>
-                @endisset
-            </div>
+                </div>
+            @endisset
         </div>
     </div>
 </div>
