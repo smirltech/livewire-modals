@@ -122,6 +122,15 @@ Outside of Livewire components, you can use the `Livewire.emit` method:
 
 ```html
 
+<button type="button" onclick="showModal('auth.profile-update')">
+    {{ __('Update Profile') }}
+</button>
+```
+
+or
+
+```html
+
 <script>
     Livewire.emit('showModal', 'auth.profile-update');
 </script>
