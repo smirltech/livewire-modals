@@ -17,8 +17,8 @@
         modal.hide();
     });
 
-    function showModal(alias, data = null) {
-        Livewire.emit('showModal', alias, data);
+    function showModal(alias, param1 = null, param2 = null, param3 = null) {
+        Livewire.emit('showModal', alias, param1, param2, param3);
     }
 
     function hideModal(alias) {
