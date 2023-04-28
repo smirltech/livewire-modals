@@ -1,8 +1,8 @@
-@props(['title' => null, 'footer' => null])
+@props(['title' => null, 'footer' => null,'theme'=>'default'])
 <!-- Modal -->
 <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-{{$theme}}">
             <h5 class="modal-title">{{$title}}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
