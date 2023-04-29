@@ -1,4 +1,6 @@
-# Laravel Livewire Modals
+![Livewire Charts](https://banners.beyondco.de/Livewire%20Modals.png?theme=light&packageManager=composer+require&packageName=smirltech%2Flivewire-modals&pattern=architect&style=style_1&description=Dynamic+Laravel+Livewire+Bootstrap+modals.&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+
+# Livewire Modals
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/smirltech/livewire-modals.svg?style=flat-square)](https://packagist.org/packages/smirltech/livewire-modals)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/smirltech/livewire-modals/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/smirltech/livewire-modals/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -6,6 +8,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/smirltech/livewire-modals.svg?style=flat-square)](https://packagist.org/packages/smirltech/livewire-modals)
 
 This package allows you to dynamically show your Laravel Livewire components inside Bootstrap modals.
+
 
 ## Documentation
 
