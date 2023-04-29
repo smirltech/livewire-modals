@@ -3,8 +3,6 @@
 namespace SmirlTech\LivewireModals;
 
 use Livewire\Livewire;
-use SmirlTech\LaravelMedia\Livewire\AvatarComponent;
-use SmirlTech\LaravelMedia\Livewire\GalleryComponent;
 use SmirlTech\LivewireModals\Components\Modals;
 use SmirlTech\LivewireModals\Livewire\DeleteModel;
 use Spatie\LaravelPackageTools\Package;
