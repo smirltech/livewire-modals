@@ -45,7 +45,7 @@ class DeleteModel extends Component
 
     public function render(): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        return view('modals:livewire.delete-model');
+        return view('modals::livewire.delete-model');
     }
 
     // delete the model

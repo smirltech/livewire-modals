@@ -17,6 +17,10 @@
         modal.hide();
     });
 
+    function showDeleteModal(modal_type, id) {
+        showModal('modals::delete-model', modal_type, id);
+    }
+
     function showModal(alias, param1 = null, param2 = null, param3 = null) {
         Livewire.emit('showModal', alias, param1, param2, param3);
     }
