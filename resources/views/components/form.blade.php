@@ -1,4 +1,4 @@
-@props(['title' => null, 'footer' => null,'theme'=>'default','submit'=>'submit'])
+@props(['title' => null, 'footer' => null,'theme'=>'primary','submit'=>'submit'])
 <div class="modal-dialog">
     <form wire:submit.prevent="{{$submit}}">
         <div class="modal-content">

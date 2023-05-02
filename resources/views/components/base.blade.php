@@ -1,4 +1,4 @@
-@props(['title' => null, 'footer' => null,'theme'=>'default'])
+@props(['title' => null, 'footer' => null,'theme'=>'primary'])
 <!-- Modal -->
 <div class="modal-dialog">
     <div class="modal-content">
