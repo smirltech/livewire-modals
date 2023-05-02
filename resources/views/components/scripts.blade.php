@@ -22,7 +22,11 @@
     }
 
     function showModal(alias, param1 = null, param2 = null, param3 = null) {
-        Livewire.emit('showModal', alias, param1, param2, param3);
+        if (param1) {
+            Livewire.emit('showModal', alias, param1, param2, param3);
+        } else {
+            Livewire.emit('showModal', alias);
+        }
     }
 
     function hideModal(alias) {
