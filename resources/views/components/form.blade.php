@@ -15,9 +15,16 @@
                     @isset($footer)
                         {{$footer}}
                     @else
-                        <x-form::button-secondary type="button" data-bs-dismiss="modal">Fermer
-                        </x-form::button-secondary>
-                        <x-form::button-primary type="submit">Soumettre</x-form::button-primary>
+                        <x-form::button
+                                theme="secondary"
+                                icon="close"
+                                type="button"
+                                data-bs-dismiss="modal"
+                                label="Fermer"/>
+                        <x-form::button
+                                icon="check"
+                                type="submit"
+                                label="Soumettre"/>
                     @endisset
                 </div>
             </div>
