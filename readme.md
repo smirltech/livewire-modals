@@ -121,7 +121,7 @@ Alternatively, you can use the `x-modals::base` or `x-modals::form` component:
 Show a modal by emitting the `showModal` event with the component alias:
 
 ```html
-<button type="button" wire:click="$emit('showModal', 'auth.profile-update')">
+<button type="button" wire:click="$dispatch('showModal', 'auth.profile-update')">
   {{ __('Update Profile') }}
 </button>
 ```
@@ -138,7 +138,7 @@ or
 
 ```html
 <script>
-  Livewire.emit("showModal", "auth.profile-update");
+  Livewire.dispatch("showModal", "auth.profile-update");
 </script>
 ```
 
@@ -149,7 +149,7 @@ Pass parameters to the component `mount` method after the alias:
 ```html
 <button
   type="button"
-  wire:click="$emit('showModal', 'users.update', '{{ $user->id }}')"
+  wire:click="$dispatch('showModal', 'users.update', { userId:$user->id })"
 >
   {{ __('Update User #' . $user->id) }}
 </button>
@@ -184,7 +184,9 @@ class Update extends Component
 Hide the currently open modal by emitting the `hideModal` event:
 
 ```html
-<button type="button" wire:click="$emit('hideModal')">{{ __('Close') }}</button>
+<button type="button" wire:click="$dispatch('hideModal')">
+  {{ __('Close') }}
+</button>
 ```
 
 Or by using the Bootstrap `data-bs-dismiss` attribute:
@@ -198,7 +200,9 @@ Or by using the Bootstrap `data-bs-dismiss` attribute:
 You can emit events inside your views:
 
 ```html
-<button type="button" wire:click="$emit('hideModal')">{{ __('Close') }}</button>
+<button type="button" wire:click="$dispatch('hideModal')">
+  {{ __('Close') }}
+</button>
 ```
 
 Or inside your components, just like any normal Livewire event:
@@ -210,7 +214,7 @@ public function save()
 
     // save the record
 
-    $this->emit('hideModal');
+    $this->dispatch('hideModal');
 }
 ```
 
