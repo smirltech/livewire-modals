@@ -14,13 +14,13 @@ This package allows you to dynamically show your Laravel Livewire components ins
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Modal Views](#modal-views)
-  - [Showing Modals](#showing-modals)
-  - [Mount Parameters](#mount-parameters)
-  - [Hiding Modals](#hiding-modals)
-  - [Emitting Events](#emitting-events)
+    - [Modal Views](#modal-views)
+    - [Showing Modals](#showing-modals)
+    - [Mount Parameters](#mount-parameters)
+    - [Hiding Modals](#hiding-modals)
+    - [Emitting Events](#emitting-events)
 - [Publishing Assets](#publishing-assets)
-  - [Custom View](#custom-view)
+    - [Custom View](#custom-view)
 
 ## Requirements
 
@@ -43,7 +43,7 @@ Using `mix`
 require("@popperjs/core");
 require("bootstrap");
 
-import { Modal } from "bootstrap";
+import {Modal} from "bootstrap";
 
 window.Modal = Modal;
 ```
@@ -54,7 +54,7 @@ Using `vite`
 import("@popperjs/core");
 import("bootstrap");
 
-import { Modal } from "bootstrap";
+import {Modal} from "bootstrap";
 
 window.Modal = Modal;
 ```
@@ -70,10 +70,11 @@ composer require smirltech/livewire-modals
 Add `livewire:modals` and `x-modals::scripts` components to your layout:
 
 ```html
-<livewire:modals />
-<livewire:scripts />
+
+<livewire:modals/>
+<livewire:scripts/>
 <script src="{{ asset('js/app.js') }}"></script>
-<x-modals::scripts />
+<x-modals::scripts/>
 ```
 
 ## Usage
@@ -84,35 +85,37 @@ Make a Livewire component you want to show as a modal. The view for this compone
 container:
 
 ```html
+
 <div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">Modal title</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+            ></button>
+        </div>
+        <div class="modal-body">
+            <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
     </div>
-    <div class="modal-body">
-      <p>Modal body text goes here.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        Close
-      </button>
-      <button type="button" class="btn btn-primary">Save changes</button>
-    </div>
-  </div>
 </div>
 ```
 
 Alternatively, you can use the `x-modals::base` or `x-modals::form` component:
 
 ```html
+
 <x-modals::base title="Modal title">
-  Modal body text goes here.
+    Modal body text goes here.
 </x-modals::base>
 ```
 
@@ -121,25 +124,47 @@ Alternatively, you can use the `x-modals::base` or `x-modals::form` component:
 Show a modal by emitting the `showModal` event with the component alias:
 
 ```html
+
 <button type="button" wire:click="$dispatch('showModal', 'auth.profile-update')">
-  {{ __('Update Profile') }}
+    {{ __('Update Profile') }}
 </button>
 ```
 
 Outside of Livewire components, you can use the `Livewire.emit` method:
 
 ```html
+
 <button type="button" onclick="showModal('auth.profile-update')">
-  {{ __('Update Profile') }}
+    {{ __('Update Profile') }}
 </button>
 ```
 
 or
 
 ```html
+
 <script>
-  Livewire.dispatch("showModal", "auth.profile-update");
+    Livewire.dispatch("showModal", "auth.profile-update");
 </script>
+```
+
+### Delete Modal
+
+```html
+
+<button
+        class="btn btn-danger  m-1"
+        wire:click="$emit('showModal', 'modals::delete-model', 'Cours','{{ $cour->id }}')">
+    <i class="fa fa-trash"></i>
+</button>
+
+
+<button
+        class="btn btn-danger  m-1"
+        wire:click="$emit('showModal', 'modals::delete-model', 'Cours','{{ $cour->id }}')">
+    <i class="fa fa-trash"></i>
+</button>
+
 ```
 
 ### Mount Parameters
@@ -147,11 +172,12 @@ or
 Pass parameters to the component `mount` method after the alias:
 
 ```html
+
 <button
-  type="button"
-  wire:click="$dispatch('showModal', 'users.update', { userId:$user->id })"
+        type="button"
+        wire:click="$dispatch('showModal', 'users.update', { userId:$user->id })"
 >
-  {{ __('Update User #' . $user->id) }}
+    {{ __('Update User #' . $user->id) }}
 </button>
 ```
 
@@ -184,14 +210,16 @@ class Update extends Component
 Hide the currently open modal by emitting the `hideModal` event:
 
 ```html
+
 <button type="button" wire:click="$dispatch('hideModal')">
-  {{ __('Close') }}
+    {{ __('Close') }}
 </button>
 ```
 
 Or by using the Bootstrap `data-bs-dismiss` attribute:
 
 ```html
+
 <button type="button" data-bs-dismiss="modal">{{ __('Close') }}</button>
 ```
 
@@ -200,8 +228,9 @@ Or by using the Bootstrap `data-bs-dismiss` attribute:
 You can emit events inside your views:
 
 ```html
+
 <button type="button" wire:click="$dispatch('hideModal')">
-  {{ __('Close') }}
+    {{ __('Close') }}
 </button>
 ```
 
