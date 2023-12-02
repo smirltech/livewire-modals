@@ -54,10 +54,15 @@ class DeleteModel extends Component
         $this->emit('hideModal');
         try {
             $this->model->delete();
-            $this->dispatch('modelDeleted');
+            $this->emit('modelDeleted');
             $this->flash('success', 'L\'élément a bien été supprimé', [], URL::previous());
+
         } catch (QueryException $e) {
-            $this->alert('error', $e->errorInfo[2], $this->getHumanizedErrorMessage($e->errorInfo));
+            $this->alert(
+                type: 'error',
+                //  message: $e->errorInfo[2],
+                message: $this->getHumanizedErrorMessage($e->errorInfo)
+            );
         }
     }
 
@@ -72,4 +77,5 @@ class DeleteModel extends Component
         }
         return 'Une erreur est survenue';
     }
+
 }
