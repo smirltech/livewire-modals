@@ -9,7 +9,6 @@
 
 This package allows you to dynamically show your Laravel Livewire components inside Bootstrap modals.
 
-
 ## Documentation
 
 - [Requirements](#requirements)
@@ -25,8 +24,11 @@ This package allows you to dynamically show your Laravel Livewire components ins
 
 ## Requirements
 
-Install Bootstrap 5 and Popper.js 2 in your app. See
-the [Bootstrap 5 docs](https://getbootstrap.com/docs/5.0/getting-started/introduction/#js) for more information.
+- PHP 8.1 and later
+- Laravel 10 and later
+- Livewire 3.0 and later
+- Install Bootstrap 5 and Popper.js 2 in your app. See
+  the [Bootstrap 5 docs](https://getbootstrap.com/docs/5.0/getting-started/introduction/#js) for more information.
 
   ```console
   npm install bootstrap @popperjs/core
@@ -37,25 +39,25 @@ app javascript file. Then import the `Modal` class from `bootstrap` and add it t
 
 Using `mix`
 
-  ```javascript
-  require('@popperjs/core');
-require('bootstrap');
+```javascript
+require("@popperjs/core");
+require("bootstrap");
 
-import {Modal} from 'bootstrap';
+import {Modal} from "bootstrap";
 
 window.Modal = Modal;
-  ```
+```
 
 Using `vite`
 
-  ```javascript
-  import('@popperjs/core');
-import('bootstrap');
+```javascript
+import("@popperjs/core");
+import("bootstrap");
 
-import {Modal} from 'bootstrap';
+import {Modal} from "bootstrap";
 
 window.Modal = Modal;
-  ```
+```
 
 ## Installation
 
@@ -88,13 +90,20 @@ container:
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+            ></button>
         </div>
         <div class="modal-body">
             <p>Modal body text goes here.</p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+            </button>
             <button type="button" class="btn btn-primary">Save changes</button>
         </div>
     </div>
@@ -116,7 +125,7 @@ Show a modal by emitting the `showModal` event with the component alias:
 
 ```html
 
-<button type="button" wire:click="$emit('showModal', 'auth.profile-update')">
+<button type="button" wire:click="$dispatch('showModal', 'auth.profile-update')">
     {{ __('Update Profile') }}
 </button>
 ```
@@ -135,8 +144,27 @@ or
 ```html
 
 <script>
-    Livewire.emit('showModal', 'auth.profile-update');
+    Livewire.dispatch("showModal", "auth.profile-update");
 </script>
+```
+
+### Delete Modal
+
+```html
+
+<button
+        class="btn btn-danger  m-1"
+        wire:click="$emit('showModal', 'modals::delete-model', 'Cours','{{ $cour->id }}')">
+    <i class="fa fa-trash"></i>
+</button>
+
+
+<button
+        class="btn btn-danger  m-1"
+        wire:click="$emit('showModal', 'modals::delete-model', 'Cours','{{ $cour->id }}')">
+    <i class="fa fa-trash"></i>
+</button>
+
 ```
 
 ### Mount Parameters
@@ -145,7 +173,10 @@ Pass parameters to the component `mount` method after the alias:
 
 ```html
 
-<button type="button" wire:click="$emit('showModal', 'users.update', '{{ $user->id }}')">
+<button
+        type="button"
+        wire:click="$dispatch('showModal', 'users.update', { userId:$user->id })"
+>
     {{ __('Update User #' . $user->id) }}
 </button>
 ```
@@ -161,12 +192,12 @@ use Livewire\Component;
 class Update extends Component
 {
     public $user;
-    
+
     public function mount(User $user)
     {
         $this->user = $user;
     }
-    
+
     public function render()
     {
         return view('users.update');
@@ -180,7 +211,7 @@ Hide the currently open modal by emitting the `hideModal` event:
 
 ```html
 
-<button type="button" wire:click="$emit('hideModal')">
+<button type="button" wire:click="$dispatch('hideModal')">
     {{ __('Close') }}
 </button>
 ```
@@ -189,9 +220,7 @@ Or by using the Bootstrap `data-bs-dismiss` attribute:
 
 ```html
 
-<button type="button" data-bs-dismiss="modal">
-    {{ __('Close') }}
-</button>
+<button type="button" data-bs-dismiss="modal">{{ __('Close') }}</button>
 ```
 
 ### Emitting Events
@@ -200,7 +229,7 @@ You can emit events inside your views:
 
 ```html
 
-<button type="button" wire:click="$emit('hideModal')">
+<button type="button" wire:click="$dispatch('hideModal')">
     {{ __('Close') }}
 </button>
 ```
@@ -214,7 +243,7 @@ public function save()
 
     // save the record
 
-    $this->emit('hideModal');
+    $this->dispatch('hideModal');
 }
 ```
 
