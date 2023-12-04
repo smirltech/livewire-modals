@@ -24,7 +24,7 @@ class Modals extends Component
         $this->alias = $alias;
         $this->params = $params;
 
-        $this->dispatch('showBootstrapModal');
+        $this->emit('showBootstrapModal');
     }
 
     public function resetModal(): void

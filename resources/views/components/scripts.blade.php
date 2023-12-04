@@ -23,9 +23,9 @@
 
     function showModal(alias, param1 = null, param2 = null, param3 = null) {
         if (param1) {
-            Livewire.dispatch('showModal', alias, {param1:param1, param2:param2, param3:param3});
+            Livewire.emit('showModal', alias, param1, param2, param3);
         } else {
-            Livewire.dispatch('showModal', alias);
+            Livewire.emit('showModal', alias);
         }
     }
 
