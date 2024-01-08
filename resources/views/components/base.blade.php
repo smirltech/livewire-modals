@@ -1,12 +1,9 @@
-@props(['title' => null, 'footer' => null,'theme'=>'primary','header'=>null,'size'=>null])
+@props(['title' => null, 'footer' => null,'theme'=>'primary','header'=>null])
 @php
     $textColor = in_array($theme,['primary','secondary','success','danger','warning','info','light','dark'])?'text-white':'text-dark';
 @endphp
-
-        <!-- Modal -->
-<div class="modal-dialog modal-{{$size}}">
+<div class="modal-dialog">
     <div class="modal-content">
-
         @if($title or $header)
             <div class="modal-header bg-{{$theme}}">
                 {{$header}}
@@ -16,11 +13,11 @@
         @endif
         <div class="modal-body">
             {{$slot}}
-            @isset($footer)
-                <div class="modal-footer">
-                    {{$footer}}
-                </div>
-            @endisset
         </div>
+        @isset($footer)
+            <div class="modal-footer">
+                {{$footer}}
+            </div>
+        @endisset
     </div>
 </div>
