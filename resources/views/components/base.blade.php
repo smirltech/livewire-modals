@@ -1,4 +1,4 @@
-@props(['title' => null, 'footer' => null,'theme'=>'primary','header'=>null,'size'=>'md'])
+@props(['title' => null, 'footer' => null,'theme'=>'primary','header'=>null,'size'=>null])
 @php
     $textColor = in_array($theme,['primary','secondary','success','danger','warning','info','light','dark'])?'text-white':'text-dark';
 @endphp
