@@ -40,7 +40,7 @@ class DeleteModel extends Component
         }
 
         $this->authorize('delete', $this->model);
-        $this->label = $this->model->name ?? $this->model->nom ?? $this->model->title ?? $this->model->label ?? $this->model->code ?? $this->model->id;
+        $this->label = (method_exists($this->model, 'label') ? $this->model->label() : null) ?? $this->model->name ?? $this->model->nom ?? $this->model->title ?? $this->model->label ?? $this->model->code ?? $this->model->id;
     }
 
     public function render(): View|\Illuminate\Foundation\Application|Factory|Application
