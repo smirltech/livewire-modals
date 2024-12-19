@@ -39,7 +39,15 @@ class DeleteModel extends Component
             throw new Exception("The model '{$model_type}' does not exist");
         }
 
-        $this->authorize('delete', $this->model);
+
+        // check if the user is authorized to delete the model
+        // start by checking if the policy class exists
+        $policy = "App\\Policies\\{$model_type}Policy";
+
+        if (class_exists($policy)) {
+            $this->authorize('delete', $this->model);
+        }
+
         $this->label = (method_exists($this->model, 'label') ? $this->model->label() : null) ?? $this->model->name ?? $this->model->nom ?? $this->model->title ?? $this->model->label ?? $this->model->code ?? $this->model->id;
     }
 
