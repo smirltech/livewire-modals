@@ -1,135 +1,91 @@
 <?php
 
-namespace App\Models;
+namespace SmirlTech\LivewireModals\Livewire;
 
-use App\Models\Scopes\CoursEnseignantScope;
-use App\Services\Admin\Models\Faculte;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use OwenIt\Auditing\Auditable;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+use JetBrains\PhpStorm\NoReturn;
+use Livewire\Component;
 
-
-class CoursEnseignant extends Model implements \OwenIt\Auditing\Contracts\Auditable
+class DeleteModel extends Component
 {
-    use HasFactory, HasUlids, Auditable;
+    use AuthorizesRequests, LivewireAlert;
 
-    protected $casts = [
-        'assistants' => 'array',
-        'promotion_codes' => 'array'
-    ];
-    protected $with = [
-        'cours', 'enseignant'
-    ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new CoursEnseignantScope());
-    }
-
-    public function getLabelAttribute(): string
-    {
-        return $this->cours?->nom . " - " . $this->display_promotions;
-    }
-
-    public function getDisplayPromotionsAttribute(): ?string
-    {
-        if (!$this->promotion_codes) return null;
-
-        return implode(', ', $this->promotion_codes);
-    }
-
-    public function cours(): BelongsTo
-    {
-        return $this->belongsTo(Cours::class);
-    }
-
-    public function enseignant(): BelongsTo
-    {
-        return $this->belongsTo(Enseignant::class);
-    }
-
-    public function getFaculteByCode(): ?Faculte
-    {
-        return Faculte::whereCode($this->faculte_code)->first();
-    }
-
-    public function assistants(): Collection
-    {
-        if (!$this->assistants) return new Collection();
-        return Enseignant::whereIn('id', $this->assistants)->get();
-    }
-
-    public function getProgress(): float|int
-    {
-        $totalHeures = $this->totalHeures();
-        $totalHeuresPr = $this->totalHeuresPr();
-
-        if ($totalHeures === 0) return 0;
-        return round($totalHeuresPr / $totalHeures * 100, 2);
-    }
-
-    public function totalHeures(): int
-    {
-        return $this->cours->volumeHoraire();
-    }
-
-    public function totalHeuresPr(): int
-    {
-        $totalHeuresPr = 0;
-        foreach ($this->horaires as $horaire) {
-            $totalHeuresPr += $horaire->totalHeuresPr();
-        }
-        return $totalHeuresPr;
-    }
+    public Model $model;
+    public string $label;
 
     /**
      * @throws Exception
      */
-    public function totalHeuresHoraire(): int
+    #[NoReturn]
+    public function mount(string $model_type, string $model_id): void
     {
-        $totalHeuresPr = 0;
-        foreach ($this->horaires as $horaire) {
-            $totalHeuresPr += $horaire->totalHeures();
+        $model_type = 'App\\Models\\' . $model_type;
+
+        if ($model_id && class_exists($model_type)) {
+            $this->model = $model_type::find($model_id);
+            if (!$this->model->exists) {
+                throw new Exception("No model found with id '{$model_id}'");
+            }
+        } else {
+            throw new Exception("The model '{$model_type}' does not exist");
         }
-        return $totalHeuresPr;
+
+        $this->authorize('delete', $this->model);
+        $this->label = (method_exists($this->model, 'label') ? $this->model->label() : null)
+            ?? $this->model->name
+            ?? $this->model->nom
+            ?? $this->model->title
+            ?? $this->model->label
+            ?? $this->model->code
+            ?? $this->model->id;
     }
 
-    public function dateDebut(): ?string
+    public function render(): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        return $this->horaires->min('date');
+        return view('modals::livewire.delete-model');
     }
 
-    public function dateFin(): ?string
+    // Delete the model
+    public function delete(): void
     {
-        return $this->horaires->max('date');
-    }
+        $this->emit('hideModal');
+        try {
+            $this->model->delete();
+            $this->emit('modelDeleted');
+            $this->flash('success', 'L\'élément a bien été supprimé', [], URL::previous());
 
-    public function delete(): ?bool
-    {
-        // prevent deletion if there are moyennes otherwise delete
+        } catch (QueryException $e) {
+            Log::error("Delete failed for model ID {$this->model->id}: " . $e->getMessage());
 
-        if ($this->moyennes()->count() == 0) {
+            $message = $this->getHumanizedErrorMessage($e->getMessage(), $this->model->id);
 
-            $this->horaires()->each(function ($horaire) {
-                $horaire->delete();
-            });
+            // dialog
+            $this->alert(type: 'error', message: $message, options: ['toast' => false, 'timer' => 5000]);
         }
-        return parent::delete();
     }
 
-    public function moyennes(): hasMany
+    private function getHumanizedErrorMessage(string $errorMessage, string|int $modelId): string
     {
-        return $this->hasMany(Moyenne::class)->orderBy('cote', 'desc');
-    }
+        if (str_contains($errorMessage, 'foreign key constraint fails')) {
+            // Extract the foreign key constraint name
+            if (preg_match("/CONSTRAINT `(.+?)`/", $errorMessage, $matches)) {
+                $constraintName = $matches[1] ?? 'unknown_constraint';
+                return "Impossible de supprimer l'élément (ID: {$modelId}) car il est référencé par la contrainte '{$constraintName}'.";
+            }
 
-    public function horaires(): hasMany
-    {
-        return $this->hasMany(Horaire::class);
+            return "Impossible de supprimer l'élément (ID: {$modelId}) à cause d'une contrainte de clé étrangère.";
+        }
+
+        return "Une erreur est survenue lors de la suppression de l'élément (ID: {$modelId}).";
     }
 
 
